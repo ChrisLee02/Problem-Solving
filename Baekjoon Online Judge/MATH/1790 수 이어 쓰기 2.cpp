@@ -1,0 +1,56 @@
+/*
+1부터 N까지의 수를 이어서 쓰면 다음과 같이 새로운 하나의 수를 얻을 수 있다.
+
+1234567891011121314151617181920212223...
+
+이렇게 만들어진 새로운 수에서, 앞에서 k번째 자리 숫자가 어떤 숫자인지 구하는 프로그램을 작성하시오.
+
+입력
+첫째 줄에 N(1 ≤ N ≤ 100,000,000)과, k(1 ≤ k ≤ 1,000,000,000)가 주어진다. N과 k 사이에는 공백이 하나 이상 있다.
+
+출력
+첫째 줄에 앞에서 k번째 자리 숫자를 출력한다. 수의 길이가 k보다 작아서 k번째 자리 숫자가 없는 경우는 -1을 출력한다.
+ */
+
+#include <bits/stdc++.h>
+
+using namespace std;
+
+int pow_of_ten(int n) {
+    int res = 1;
+    for(int i = 1; i<=n; i++) {
+        res = res*10;
+    }
+    return res;
+}
+
+int main()
+{
+    int N, K;
+    cin >> N >> K;
+    int cnt = 0;
+    bool over_N = false;
+    bool found = false;
+    for(int digit = 1; digit<=9; digit++) {
+        int pow_of_ten_digit = pow_of_ten(digit);
+        for(int i = pow_of_ten_digit/10; i<= pow_of_ten_digit-1; i++) {
+            if(i>N) {
+                over_N = true;
+                break;
+            }
+            cnt = cnt + digit;
+            if(cnt >= K) {
+                while(cnt > K) {
+                    i = i/10;
+                    cnt--;
+                }
+                cout << i%10;
+                found = true;
+                break;
+            }
+        }
+        if(over_N || found) break;
+    }
+    if(over_N) cout << -1;
+
+}
